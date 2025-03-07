@@ -52,7 +52,7 @@ vehicle-performance/
 - ✅ **Data Visualization** (Matplotlib/Seaborn)
 - ✅ **Interactive Dashboard** (Dash/Streamlit for performance analysis)
 - ⏳ **(In Progress)** Cloud Storage Integration (Optional)
-- ⏳ **(In Progress)** Machine Learning-Based Anomaly Detection (Bonus)
+- ⏳ **(In Progress: Almost done)** Machine Learning-Based Anomaly Detection (Bonus)
 
 ---
 
@@ -115,6 +115,6 @@ This project is for educational purposes.
 ## 📩 Contact
 If you have any questions, feel free to reach out! 😊  
 🔗 **GitHub**: [s1upee](https://github.com/s1upee)  
-🔗 **Email**: lisakrasiuk@email.com  
+🔗 **Email**: lisakrasiuk@gmail.com  
 ```
 

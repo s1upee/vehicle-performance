@@ -6,23 +6,23 @@ import plotly.express as px
 import time
 
 # Load initial data
-df = pd.read_csv("data/processed_vehicle_data.csv")
+df = pd.read_csv("data/ml_detected_anomalies.csv")
 
 def load_data():
     """Reloads the latest processed vehicle data."""
-    return pd.read_csv("data/processed_vehicle_data.csv")
+    return pd.read_csv("data/ml_detected_anomalies.csv")
 
 # Initialize Dash app
 app = dash.Dash(__name__)
 
 # Layout with dropdown filter and real-time updates
 app.layout = html.Div(children=[
-    html.H1("Vehicle Performance Dashboard"),
+    html.H1("Vehicle Performance Dashboard with ML Anomalies"),
     dcc.Dropdown(
         id='filter-dropdown',
         options=[
             {'label': 'Show All Data', 'value': 'all'},
-            {'label': 'Show Only Anomalies', 'value': 'anomalies'}
+            {'label': 'Show Only ML Anomalies', 'value': 'ml_anomalies'}
         ],
         value='all',
         clearable=False,
@@ -49,17 +49,17 @@ app.layout = html.Div(children=[
 def update_graphs(n_intervals, filter_value):
     df = load_data()
     
-    if filter_value == 'anomalies':
-        df = df[df['hard_braking'] | df['sudden_acceleration'] | df['sharp_turn']]
+    if filter_value == 'ml_anomalies':
+        df = df[df['ml_anomaly']]
     
     fig_acceleration = px.line(df, x='time', y='acceleration', title='Acceleration Over Time', markers=True)
-    fig_acceleration.add_scatter(x=df[df['sudden_acceleration']]['time'], y=df[df['sudden_acceleration']]['acceleration'], mode='markers', marker=dict(color='red', size=8), name='Sudden Acceleration')
+    fig_acceleration.add_scatter(x=df[df['ml_anomaly']]['time'], y=df[df['ml_anomaly']]['acceleration'], mode='markers', marker=dict(color='purple', size=8), name='ML Anomaly')
     
     fig_braking = px.line(df, x='time', y='brake_force', title='Braking Force Over Time', markers=True)
-    fig_braking.add_scatter(x=df[df['hard_braking']]['time'], y=df[df['hard_braking']]['brake_force'], mode='markers', marker=dict(color='red', size=8), name='Hard Braking')
+    fig_braking.add_scatter(x=df[df['ml_anomaly']]['time'], y=df[df['ml_anomaly']]['brake_force'], mode='markers', marker=dict(color='purple', size=8), name='ML Anomaly')
     
     fig_steering = px.line(df, x='time', y='steering_angle', title='Steering Angle Over Time', markers=True)
-    fig_steering.add_scatter(x=df[df['sharp_turn']]['time'], y=df[df['sharp_turn']]['steering_angle'], mode='markers', marker=dict(color='red', size=8), name='Sharp Turn')
+    fig_steering.add_scatter(x=df[df['ml_anomaly']]['time'], y=df[df['ml_anomaly']]['steering_angle'], mode='markers', marker=dict(color='purple', size=8), name='ML Anomaly')
     
     return fig_acceleration, fig_braking, fig_steering
 
