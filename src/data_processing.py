@@ -44,6 +44,18 @@ def add_kinematic_features(df):
 
     return df
 
+def add_aggregated_statistics(df, window_size=3):
+    """Adds rolling averages to smooth sudden spikes."""
+    df['rolling_acceleration'] = df['acceleration'].rolling(window=window_size).mean()
+    df['rolling_brake_force'] = df['brake_force'].rolling(window=window_size).mean()
+    return df
+
+def add_steering_features(df, threshold=15):
+    """Adds steering rate and lane change detection."""
+    df['steering_rate'] = df['steering_angle'].diff() / df['time'].diff()
+    df['is_lane_change'] = (df['steering_angle'].shift(1) * df['steering_angle'] < 0) & (abs(df['steering_angle']) > threshold)
+    return df
+
 # Load the simulated data
 df = pd.read_csv("data/simulated_vehicle_data.csv")
 
@@ -52,6 +64,12 @@ df = add_temporal_features(df)
 
 # Add kinematic features
 df = add_kinematic_features(df)
+
+# Adds rolling averages for smoothing
+df = add_aggregated_statistics(df)
+
+# Adds steering rate & lane change detection
+df = add_steering_features(df, threshold=15)
 
 # Apply anomaly detection
 df = detect_anomalies(df)
