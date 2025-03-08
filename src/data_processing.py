@@ -56,6 +56,11 @@ def add_steering_features(df, threshold=15):
     df['is_lane_change'] = (df['steering_angle'].shift(1) * df['steering_angle'] < 0) & (abs(df['steering_angle']) > threshold)
     return df
 
+def add_interaction_features(df):
+    """Adds interaction features such as risk factor combining acceleration and steering angle."""
+    df['risk_factor'] = abs(df['acceleration']) * abs(df['steering_angle'])
+    return df
+
 # Load the simulated data
 df = pd.read_csv("data/simulated_vehicle_data.csv")
 
@@ -70,6 +75,9 @@ df = add_aggregated_statistics(df)
 
 # Adds steering rate & lane change detection
 df = add_steering_features(df, threshold=15)
+
+# Combining acceleration & steering angle
+df = add_interaction_features(df)
 
 # Apply anomaly detection
 df = detect_anomalies(df)
