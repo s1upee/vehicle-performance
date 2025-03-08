@@ -28,11 +28,30 @@ def add_temporal_features(df):
 
     return df
 
+def add_kinematic_features(df):
+    """Adds derived kinematic features: speed, jerk, and brake intensity."""
+    # Simulate time index (assuming equal intervals)
+    df['time'] = df.index  
+
+    # Estimate speed using numerical integration (cumulative sum of acceleration)
+    df['speed'] = df['acceleration'].cumsum()
+
+    # Compute jerk (rate of change of acceleration)
+    df['jerk'] = df['acceleration'].diff()
+
+    # Compute braking intensity (relative to speed)
+    df['brake_intensity'] = df['brake_force'] / (df['speed'].abs() + 1e-5)
+
+    return df
+
 # Load the simulated data
 df = pd.read_csv("data/simulated_vehicle_data.csv")
 
 # Add temporal features
 df = add_temporal_features(df)
+
+# Add kinematic features
+df = add_kinematic_features(df)
 
 # Apply anomaly detection
 df = detect_anomalies(df)
@@ -42,6 +61,6 @@ anomalies_count = df[['hard_braking', 'sudden_acceleration', 'sharp_turn']].sum(
 print("Anomalies Detected:")
 print(anomalies_count)
 
-# Save processed data with anomalies flagged and temporal features
+# Save processed data with anomalies, temporal, and kinematic features
 df.to_csv("data/processed_vehicle_data.csv", index=False)
 print("Processed data saved to data/processed_vehicle_data.csv")
