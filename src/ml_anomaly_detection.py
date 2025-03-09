@@ -5,6 +5,8 @@ from sklearn.svm import OneClassSVM
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.model_selection import GridSearchCV
+from sklearn.utils.validation import check_is_fitted
 
 # Load realistic vehicle data
 df = pd.read_csv("data/realistic_vehicle_data.csv")
@@ -17,10 +19,34 @@ X = df[features]
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# Define multiple anomaly detection models
+# Define parameter grids for fine-tuning
+param_grid_iforest = {
+    'contamination': [0.01, 0.02, 0.03, 0.05],
+    'n_estimators': [50, 100, 200]
+}
+param_grid_ocsvm = {
+    'nu': [0.01, 0.03],
+    'kernel': ['rbf']
+}
+
+# Define a custom scoring function for anomaly detection
+def custom_scorer(estimator, X):
+    return -np.mean(estimator.fit(X).decision_function(X))  # Higher is better (minimizing negative score)
+
+# Fine-tune Isolation Forest
+iforest = GridSearchCV(IsolationForest(random_state=42), param_grid_iforest, cv=5, scoring=custom_scorer)
+iforest.fit(X_scaled)
+best_iforest = iforest.best_estimator_
+
+# Fine-tune One-Class SVM
+ocsvm = GridSearchCV(OneClassSVM(), param_grid_ocsvm, cv=5, scoring=custom_scorer)
+ocsvm.fit(X_scaled)
+best_ocsvm = ocsvm.best_estimator_
+
+# Define multiple anomaly detection models with optimized parameters
 models = {
-    'Isolation Forest': IsolationForest(contamination=0.03, n_estimators=100, random_state=42),
-    'One-Class SVM': OneClassSVM(nu=0.03, kernel="rbf"),
+    'Isolation Forest': best_iforest,
+    'One-Class SVM': best_ocsvm,
     'Local Outlier Factor': LocalOutlierFactor(n_neighbors=20, contamination=0.03)
 }
 
@@ -68,6 +94,20 @@ df_results.to_csv("data/optimized_ml_detected_anomalies.csv", index=False)
 # Save evaluation results
 evaluation_df = pd.DataFrame(evaluation_results).T
 evaluation_df.to_csv("data/model_performance_metrics.csv", index=True)
+
+print("Data Shape:", X.shape)
+print("First 5 rows:\n", X.head())
+print("Missing values:\n", X.isnull().sum())
+
+print("Best Parameters for Isolation Forest:", iforest.best_params_)
+print("Best Parameters for One-Class SVM:", ocsvm.best_params_)
+
+print("Isolation Forest anomalies detected:", df_results["Isolation Forest_anomaly"].sum())
+print("One-Class SVM anomalies detected:", df_results["One-Class SVM_anomaly"].sum())
+print("Local Outlier Factor anomalies detected:", df_results["Local Outlier Factor_anomaly"].sum())
+print("Final Anomalies (majority voting):", df_results["final_anomaly"].sum())
+
+print(evaluation_df)
 
 # Print evaluation results
 print("Refined ML anomaly detection complete. Results saved to data/optimized_ml_detected_anomalies.csv")
