@@ -1,114 +1,95 @@
-# 🚗 Vehicle Performance Data Acquisition System
+# 🚀 Vehicle Anomaly Detection & Visualization
 
-## 📌 Project Status: In Progress 🚀
-I have just started working on this project, and it is currently in the development phase. Stay tuned for updates as I build out the system!  
+## 📌 Overview
+This project implements a **Machine Learning-powered anomaly detection system** for vehicle performance data. It integrates advanced **data processing, anomaly detection, visualization, and a real-time dashboard** to monitor anomalies in acceleration, braking force, and steering angle.
 
----
-
-## 📚 Overview
-This project aims to develop a **Vehicle Performance Data Acquisition System** that collects and analyzes real-time driving data, focusing on acceleration, braking force, steering input, and ADAS event detection.  
-
----
-
-## 📂 Project Structure
+## 🏗 Project Structure
 ```
-vehicle-performance/
-│
-├── data/                      # Contains sample datasets
-│   ├── simulated_vehicle_data.csv  # Raw simulated data
-│   ├── processed_vehicle_data.csv  # Data after anomaly detection
-│
-├── src/                       # Source code
-│   ├── data_simulation.py      # Generates simulated sensor data
-│   ├── data_processing.py      # Cleans data and detects anomalies
-│   ├── visualization.py        # Plots acceleration, braking, and steering trends
-│   ├── dashboard.py            # Interactive Dash/Streamlit dashboard
-│
-├── notebooks/                  # Jupyter notebooks for analysis
-│   ├── data_analysis.ipynb     # Data exploration and visualization
-│
-├── docs/                       # Documentation
-│   ├── report.pdf              # Analysis report with insights
-│   ├── architecture_diagram.png # System structure diagram
-│   ├── screenshots/            # Folder for UI screenshots
-│
-├── tests/                      # Unit tests
-│   ├── test_data_processing.py # Test script for data processing functions
-│
-├── assets/                     # Images, icons, and demo videos
-│   ├── demo_video.mp4          # (Optional) Video demonstration
-│
-├── .gitignore                  # Ignores unnecessary files
-├── README.md                   # Project overview and instructions
-├── requirements.txt             # Dependencies (Pandas, Dash, NumPy, etc.)
-├── setup.py                     # (Optional) Package setup script
+📦 Project Root
+├── 📂 assets                   # Images & assets for documentation
+├── 📂 data                     # Raw and processed vehicle data
+│   ├── realistic_vehicle_data.csv
+│   ├── processed_vehicle_data.csv
+│   ├── ml_detected_anomalies.csv
+│   ├── optimized_ml_detected_anomalies.csv
+│   └── model_performance_metrics.csv
+├── 📂 notebooks                # Jupyter Notebook for visualization
+│   └── visualization.ipynb
+├── 📂 plots                    # Saved visualizations of anomalies
+├── 📂 src                      # Core Python scripts
+│   ├── data_processing.py      # Cleans & preprocesses vehicle data
+│   ├── data_simulation.py      # Generates synthetic vehicle data
+│   ├── ml_anomaly_detection.py # ML anomaly detection pipeline
+│   ├── visualization.py        # Generates anomaly plots
+│   ├── dashboard.py            # Interactive dashboard with Dash & Plotly
+├── 📂 tests                    # Unit tests for data processing
+│   ├── test_data_processing.py
+├── README.md                   # Project documentation
 ```
 
----
+## 🔥 Key Features
+✅ **Data Processing** – Cleans, normalizes, and prepares vehicle data for analysis.
+✅ **ML Anomaly Detection** – Detects anomalies using **Isolation Forest, One-Class SVM, and Local Outlier Factor**.
+✅ **Visualization** – Generates **histograms, time-series plots, and scatter plots** for anomaly insights.
+✅ **Interactive Dashboard** – A real-time **Dash-based UI** that updates every 5 seconds.
 
-## 🛠 Features (Planned)
-- ✅ **Simulated Vehicle Data** (Acceleration, Braking, Steering, ADAS Events)
-- ✅ **Data Processing & Anomaly Detection** (Hard Braking, Sharp Turns)
-- ✅ **Data Visualization** (Matplotlib/Seaborn)
-- ✅ **Interactive Dashboard** (Dash/Streamlit for performance analysis)
-- ⏳ **(In Progress)** Cloud Storage Integration (Optional)
-- ⏳ **(In Progress: Almost done)** Machine Learning-Based Anomaly Detection (Bonus)
+## 📊 Machine Learning Anomaly Detection
+The anomaly detection pipeline **optimizes ML parameters** and applies multiple models:
+- **Isolation Forest** 🏕 (Best contamination level: `0.05`)
+- **One-Class SVM** 🎭 (Best kernel: `rbf`, nu: `0.01`)
+- **Local Outlier Factor** 🏠 (k=20, contamination= `0.03`)
 
----
+Final anomalies are determined through **majority voting**, ensuring more robust detection.
 
-## 📊 Example Simulated Data
-```csv
-time,acceleration,brake_force,steering_angle,adas_event
-0,0.5,0,-2,0
-1,1.2,5,3,0
-2,0.8,0,-15,0
-3,5.6,20,40,1
-4,-1.3,10,-5,0
-```
-
----
-
-## 🚀 Getting Started
-### 1️⃣ Install Dependencies
-Clone the repository and install required packages:
-```bash
-git clone https://github.com/s1upee/vehicle-performance.git
-cd vehicle-performance
-pip install -r requirements.txt
-```
-
-### 2️⃣ Run Data Simulation
-Generate synthetic vehicle performance data:
-```bash
-python src/data_simulation.py
-```
-
-### 3️⃣ Process & Analyze Data
-Detect anomalies and process collected data:
-```bash
-python src/data_processing.py
-```
-
-### 4️⃣ Visualize Data
-Generate plots for acceleration, braking, and steering trends:
-```bash
-python src/visualization.py
-```
-
-### 5️⃣ Start Dashboard (Optional)
-Run an interactive dashboard for real-time analysis:
-```bash
+## 🖥 Interactive Dashboard
+Run the interactive **real-time dashboard** with:
+```sh
 python src/dashboard.py
 ```
+This dashboard:
+- Displays **acceleration, braking force, and steering anomalies**
+- Updates every **5 seconds** to reflect new anomalies detected in real-time.
 
+## 📊 Data Visualization
+Jupyter Notebook `notebooks/visualization.ipynb` contains:
+- **Histograms of acceleration, braking force, and steering angle**
+- **Time-series plots highlighting anomalies**
+- **ML performance evaluation (Precision, Recall, F1-score, ROC AUC)**
 
-## 📌 Contributing
-This is an individual project, but feedback and suggestions are always welcome! Feel free to open an issue or submit a pull request.
+## 🛠 Setup Instructions
+1️⃣ **Clone the repository**
+```sh
+git clone https://github.com/your-repo.git
+cd your-repo
+```
+2️⃣ **Install dependencies**
+```sh
+pip install -r requirements.txt
+```
+3️⃣ **Run anomaly detection**
+```sh
+python src/ml_anomaly_detection.py
+```
+4️⃣ **Launch visualization notebook**
+```sh
+jupyter notebook notebooks/visualization.ipynb
+```
+
+## 📌 Results
+✅ ML models detected anomalies in vehicle performance with ROC AUC scores around `0.48 - 0.50`.
+✅ Anomalies are **visualized in plots** & **real-time monitoring is possible via the dashboard**.
+✅ **Refined & optimized ML detection pipeline** achieves better anomaly recognition.
+
+## 💡 Future Improvements
+- 🔥 **Enhance ML models** with deep learning (LSTMs for time-series)
+- 📈 **Integrate GPS & sensor fusion** for spatial anomaly detection
+- 🚀 **Deploy on a cloud server** for real-time vehicle monitoring
+
+## 📜 License
+This project is **open-source** under the MIT License.
 
 ---
-
-## 🐜 License
-This project is for educational purposes.
+🚀 **This repository contains one of the most powerful and refined vehicle anomaly detection tools – combining ML, data science, and real-time visualization!**
 
 ---
 
