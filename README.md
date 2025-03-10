@@ -31,7 +31,7 @@ This project implements a **Machine Learning-powered anomaly detection system** 
 ✅ **Data Processing** – Cleans, normalizes, and prepares vehicle data for analysis.\
 ✅ **ML Anomaly Detection** – Detects anomalies using **Isolation Forest, One-Class SVM, and Local Outlier Factor**.\
 ✅ **Visualization** – Generates **histograms, time-series plots, and scatter plots** for anomaly insights.\
-✅ **Interactive Dashboard** – A real-time **Dash-based UI** that updates every 5 seconds.\
+✅ **Interactive Dashboard** – A real-time **Dash-based UI** that updates every 5 seconds.
 
 ## 📊 Machine Learning Anomaly Detection
 The anomaly detection pipeline **optimizes ML parameters** and applies multiple models:
@@ -78,7 +78,7 @@ jupyter notebook notebooks/visualization.ipynb
 ## 📌 Results
 ✅ ML models detected anomalies in vehicle performance with ROC AUC scores around `0.48 - 0.50`.\
 ✅ Anomalies are **visualized in plots** & **real-time monitoring is possible via the dashboard**.\
-✅ **Refined & optimized ML detection pipeline** achieves better anomaly recognition.\
+✅ **Refined & optimized ML detection pipeline** achieves better anomaly recognition.
 
 ## 💡 Future Improvements
 - 🔥 **Enhance ML models** with deep learning (LSTMs for time-series)
